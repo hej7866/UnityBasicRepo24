@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityBasic.ProtoType2;
 using UnityEngine;
 
 namespace UnityBasic.Prototype2
@@ -54,6 +55,18 @@ namespace UnityBasic.Prototype2
             transform.position = transform.position + Vector3.right * horiontalInput * speed * Time.deltaTime;
         }
 
+    
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.CompareTag("Item"))
+            {
+                IitemColletable item = other.GetComponent<IitemColletable>();
+                item.Interact();
+
+                speed += 2;
+                Destroy(other.gameObject);
+            }
+        }
         
     }
 }
