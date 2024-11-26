@@ -21,6 +21,36 @@ namespace UnityBasic.Prototype2
             // transform .  동물이 내려오는 속도. 방향 * 속도 * 시간
 
             transform.position = transform.position + Vector3.back * speed * Time.deltaTime;
+
+
         }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if(collision.collider.CompareTag("End"))
+            {
+                Debug.Log("게임 오버");
+            }
+           
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            if (collision.collider.CompareTag("End"))
+            {
+                Debug.Log("충돌 종료");
+            }          
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            if (collision.collider.CompareTag("End"))
+            {
+                Debug.Log("충돌 진행 중");
+            }
+        }
+
+        
+       
     }
 }
