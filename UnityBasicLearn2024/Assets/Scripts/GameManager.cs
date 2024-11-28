@@ -1,26 +1,78 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-namespace UnityBasic.ProtoType2
+namespace UnityBasic.Prototype2
 {
     public class GameManager : MonoBehaviour
     {
-        [Header("UI 시스템")]
-        public TextMeshProUGUI Score;
-        public int curScore = 0;
+        [Header("Singleton Pattern")]
+        public static GameManager instance;
 
-        // Start is called before the first frame update
-        void Start()
+        [Header("Game Over")]
+        public GameObject gameoverPanel;
+
+        public TextMeshProUGUI curScoreText;
+        public TextMeshProUGUI bestScoreText;
+
+        public int score;
+        public int bestScore;
+
+        private void Awake()
         {
-            Score.text = $"Score : {curScore}";
+            if(instance == null)
+                instance = this;
+            else
+            {
+                Destroy(this);
+            }
+            DontDestroyOnLoad(gameObject);
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Start()
         {
-            Score.text = $"Score : {curScore}";
+            curScoreText.text = $"현재 점수 : {score}";
+            bestScoreText.text = $"최고 점수 : {bestScore}";
         }
+
+        private void Update()
+        {
+            curScoreText.text = $"현재 점수 : {score}";
+            bestScoreText.text = $"최고 점수 : {bestScore}";
+        }
+
+
+        public void AddScore()
+        {
+            score += 100;
+        }
+
+        public void DecreaseScore()
+        {
+            score -= 100;
+        }
+
+
+        public void GameOver()
+        {
+            gameoverPanel.SetActive(true);
+        }
+
+        public void GameQuit()
+        {
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
+        }
+
+        public void GameRestart()
+        {
+            SceneManager.LoadScene(0);
+        }
+
     }
 }
